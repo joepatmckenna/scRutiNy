@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>Tutorial &mdash; scRutiNy 1.2 documentation</title>
+    
+    <link rel="stylesheet" type="text/css" href="_static/css/spc-bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="_static/css/spc-extend.css">
+    <link rel="stylesheet" href="_static/scipy.css" type="text/css" >
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" >
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" >
+    <link rel="search" title="Search" href="search.html" >
+    <link rel="top" title="scRutiNy 1.2 documentation" href="index.html" >
+    <link rel="next" title="Examples" href="examples.html" >
+    <link rel="prev" title="scRutiNy of single-cell RNA-seq data" href="index.html" > 
+  </head>
+  <body>
+
+  <div class="container">
+    <div class="header">
+    </div>
+  </div>
+
+
+    <div class="container">
+      <div class="main">
+        
+	<div class="row-fluid">
+	  <div class="span12">
+	    <div class="spc-navbar">
+              
+    <ul class="nav nav-pills pull-left">
+        <li class="active"><a href="https://www.niddk.nih.gov/research-funding/at-niddk/labs-branches/LBM">LBM</a></li>
+        <li class="active"><a href="https://pypi.python.org/pypi/RNAscrutiny">scRutiNy</a></li>
+	
+        <li class="active"><a href="index.html">scRutiNy 1.2 documentation</a></li>
+	 
+    </ul>
+              
+              
+    <ul class="nav nav-pills pull-right">
+      <li class="active">
+        <a href="genindex.html" title="General Index"
+           accesskey="I">index</a>
+      </li>
+      <li class="active">
+        <a href="py-modindex.html" title="Python Module Index"
+           >modules</a>
+      </li>
+      <li class="active">
+        <a href="examples.html" title="Examples"
+           accesskey="N">next</a>
+      </li>
+      <li class="active">
+        <a href="index.html" title="scRutiNy of single-cell RNA-seq data"
+           accesskey="P">previous</a>
+      </li>
+    </ul>
+              
+	    </div>
+	  </div>
+	</div>
+        
+
+	<div class="row-fluid">
+      <div class="spc-rightsidebar span3">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Tutorial</a><ul>
+<li><a class="reference internal" href="#simulating-scrna-seq-data">Simulating scRNA-seq data</a></li>
+<li><a class="reference internal" href="#inferring-pseudotime-and-gene-regulatory-network">Inferring pseudotime and gene regulatory network</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">scRutiNy of single-cell RNA-seq data</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="examples.html"
+                        title="next chapter">Examples</a></p>
+  <h3>This Page</h3>
+  <div>
+    <a href="_sources/tutorial.rst.txt"
+       rel="nofollow">Show Source</a>
+  </div>
+            <!-- -->
+            <!--
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script> -->
+            <!-- -->
+        </div>
+      </div>
+          <div class="span9">
+            
+        <div class="bodywrapper">
+          <div class="body" id="spc-section-body">
+            
+  <div class="section" id="tutorial">
+<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">scRutiNy</span></code> provides two main functions:</dt>
+<dd><ol class="first last arabic simple">
+<li>Simulate scRNA-seq data by a dynamical system from an underlying gene regulatory network</li>
+<li>Infer pseudotime and a gene regulatory network from scRNA-seq data</li>
+</ol>
+</dd>
+</dl>
+<p>To simulate scRNA-seq data, <code class="docutils literal"><span class="pre">scRutiNy</span></code> uses the dynamical system</p>
+<div class="math">
+\[{ds^{(k)} \over dt} = -s^{(k)} + \tanh(Ws^{(k)})\]</div>
+<p>(<a class="reference external" href="https://doi.org/10.1016/S0022-5193(05)80391-1">Mjolsness, 1991</a>) where <span class="math">\(s^{(k)}\)</span> is a vector of normalized log expression values in <span class="math">\([-1,1]\)</span> of <span class="math">\(n\)</span> genes expressed in cell <span class="math">\(k\)</span> (Note that <span class="math">\(\tanh\)</span> is applied component-wise to <span class="math">\(Ws^{(k)}\)</span>). The value <span class="math">\(-1\)</span> represents the lowest possible activity level of a gene whereas the value <span class="math">\(1\)</span> represents the highest possible activity level of a gene. The matrix <span class="math">\(W\)</span>, common to the population of cells, encodes the edge weights of a genetic regulatory network. Entry <span class="math">\(w_{ij}\)</span> encodes the effect that gene <span class="math">\(j\)</span> has on gene <span class="math">\(i\)</span>. After simulating the above system, the resulting log expression values are converted to transcript counts by exponentiating the log expression values with a chosen base then rounding to non-negative integers.</p>
+<p>To infer pseudotime from a transcript count matrix <span class="math">\(X\)</span>, which has number of genes rows and number of cells columns, we first fit a minimum spanning tree using reversed graph embedding (<cite>Mao, 2016</cite>) to the columns of <span class="math">\(X\)</span> considered as points in high-dimensional gene space. After a root leaf is designated, each point is projected onto the spanning tree and a pseudotime proportional to the distance from the root leaf is assigned to the cell.</p>
+<p>To infer a genetic regulatory network from scRNA-seq data, we use cross-validated Lasso regularized regression to obtain each row of <span class="math">\(W\)</span> in the above system. More precisely, the values of <span class="math">\(s^{(k)}\)</span> are computed by dividing each cell’s vector of transcript counts by its estimated cell size factor, taking the logarithm and rescaling to the interval <span class="math">\([-1,1]\)</span>. Lasso regularized regression is used to approximate <span class="math">\(W\)</span> that satisfies</p>
+<div class="math">
+\[\tanh^{-1}\left( s^{(k)} + {s^{(k+1)} - s^{(k)} \over t_{k+1} - t_k } \right) = Ws^{(k)}\]</div>
+<p>for pairs of cells that have evolved from pseudotime <span class="math">\(t_k\)</span> to <span class="math">\(t_{k+1}\)</span>.</p>
+<div class="section" id="simulating-scrna-seq-data">
+<h2>Simulating scRNA-seq data<a class="headerlink" href="#simulating-scrna-seq-data" title="Permalink to this headline">¶</a></h2>
+<p>Before simulating scRNA-seq data, the user first specifies a development tree.</p>
+</div>
+<div class="section" id="inferring-pseudotime-and-gene-regulatory-network">
+<h2>Inferring pseudotime and gene regulatory network<a class="headerlink" href="#inferring-pseudotime-and-gene-regulatory-network" title="Permalink to this headline">¶</a></h2>
+<p>To infer a gene regulatory network, the user first infers pseudotime.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container container-navbar-bottom">
+      <div class="spc-navbar">
+        
+      </div>
+    </div>
+    <div class="container">
+    <div class="footer">
+    <div class="row-fluid">
+    <ul class="inline pull-left">
+      <li>
+        &copy; Copyright 2018, Joseph P McKenna.
+      </li>
+      <li>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.6.
+      </li>
+    </ul>
+    </div>
+    </div>
+    </div>
+  </body>
+</html>

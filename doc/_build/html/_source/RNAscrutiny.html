@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>RNAscrutiny package &mdash; scRutiNy 1.2 documentation</title>
+    
+    <link rel="stylesheet" type="text/css" href="../_static/css/spc-bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../_static/css/spc-extend.css">
+    <link rel="stylesheet" href="../_static/scipy.css" type="text/css" >
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" >
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/copybutton.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" >
+    <link rel="search" title="Search" href="../search.html" >
+    <link rel="top" title="scRutiNy 1.2 documentation" href="../index.html" > 
+  </head>
+  <body>
+
+  <div class="container">
+    <div class="header">
+    </div>
+  </div>
+
+
+    <div class="container">
+      <div class="main">
+        
+	<div class="row-fluid">
+	  <div class="span12">
+	    <div class="spc-navbar">
+              
+    <ul class="nav nav-pills pull-left">
+        <li class="active"><a href="https://www.niddk.nih.gov/research-funding/at-niddk/labs-branches/LBM">LBM</a></li>
+        <li class="active"><a href="https://pypi.python.org/pypi/RNAscrutiny">scRutiNy</a></li>
+	
+        <li class="active"><a href="../index.html">scRutiNy 1.2 documentation</a></li>
+	 
+    </ul>
+              
+              
+    <ul class="nav nav-pills pull-right">
+      <li class="active">
+        <a href="../genindex.html" title="General Index"
+           accesskey="I">index</a>
+      </li>
+      <li class="active">
+        <a href="../py-modindex.html" title="Python Module Index"
+           >modules</a>
+      </li>
+    </ul>
+              
+	    </div>
+	  </div>
+	</div>
+        
+
+	<div class="row-fluid">
+      <div class="spc-rightsidebar span3">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">RNAscrutiny package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-RNAscrutiny.grn">RNAscrutiny.grn module</a></li>
+<li><a class="reference internal" href="#module-RNAscrutiny.infer">RNAscrutiny.infer module</a></li>
+<li><a class="reference internal" href="#module-RNAscrutiny.plotting">RNAscrutiny.plotting module</a></li>
+<li><a class="reference internal" href="#module-RNAscrutiny.pseudotime">RNAscrutiny.pseudotime module</a></li>
+<li><a class="reference internal" href="#module-RNAscrutiny.simulate">RNAscrutiny.simulate module</a></li>
+<li><a class="reference internal" href="#module-RNAscrutiny.tree">RNAscrutiny.tree module</a></li>
+<li><a class="reference internal" href="#module-RNAscrutiny">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <div>
+    <a href="../_sources/_source/RNAscrutiny.rst.txt"
+       rel="nofollow">Show Source</a>
+  </div>
+            <!-- -->
+            <!--
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script> -->
+            <!-- -->
+        </div>
+      </div>
+          <div class="span9">
+            
+        <div class="bodywrapper">
+          <div class="body" id="spc-section-body">
+            
+  <div class="section" id="rnascrutiny-package">
+<h1>RNAscrutiny package<a class="headerlink" href="#rnascrutiny-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-RNAscrutiny.grn">
+<span id="rnascrutiny-grn-module"></span><h2>RNAscrutiny.grn module<a class="headerlink" href="#module-RNAscrutiny.grn" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="RNAscrutiny.grn.get_grn">
+<code class="descclassname">RNAscrutiny.grn.</code><code class="descname">get_grn</code><span class="sig-paren">(</span><em>name='TRRUST'</em>, <em>organism='human'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/grn.html#get_grn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.grn.get_grn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="RNAscrutiny.grn.get_trrust_grn">
+<code class="descclassname">RNAscrutiny.grn.</code><code class="descname">get_trrust_grn</code><span class="sig-paren">(</span><em>organism='human'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/grn.html#get_trrust_grn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.grn.get_trrust_grn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-RNAscrutiny.infer">
+<span id="rnascrutiny-infer-module"></span><h2>RNAscrutiny.infer module<a class="headerlink" href="#module-RNAscrutiny.infer" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="RNAscrutiny.infer.fit_grn">
+<code class="descclassname">RNAscrutiny.infer.</code><code class="descname">fit_grn</code><span class="sig-paren">(</span><em>data</em>, <em>t</em>, <em>dt=0.1</em>, <em>dt_eps=0.001</em>, <em>eps=0.01</em>, <em>max_iter=500</em>, <em>n_processes=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/infer.html#fit_grn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.infer.fit_grn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="RNAscrutiny.infer.fit_grn_row">
+<code class="descclassname">RNAscrutiny.infer.</code><code class="descname">fit_grn_row</code><span class="sig-paren">(</span><em>(i</em>, <em>x</em>, <em>y</em>, <em>eps</em>, <em>max_iter</em>, <em>verbose)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/infer.html#fit_grn_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.infer.fit_grn_row" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="RNAscrutiny.infer.grn_structure_score">
+<code class="descclassname">RNAscrutiny.infer.</code><code class="descname">grn_structure_score</code><span class="sig-paren">(</span><em>w</em>, <em>w_fit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/infer.html#grn_structure_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.infer.grn_structure_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="RNAscrutiny.infer.warn">
+<code class="descclassname">RNAscrutiny.infer.</code><code class="descname">warn</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/infer.html#warn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.infer.warn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-RNAscrutiny.plotting">
+<span id="rnascrutiny-plotting-module"></span><h2>RNAscrutiny.plotting module<a class="headerlink" href="#module-RNAscrutiny.plotting" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="RNAscrutiny.plotting.animate_scRNAseq_data">
+<code class="descclassname">RNAscrutiny.plotting.</code><code class="descname">animate_scRNAseq_data</code><span class="sig-paren">(</span><em>data</em>, <em>cells=None</em>, <em>t=None</em>, <em>n_frames=100</em>, <em>color_by='cell_type'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/plotting.html#animate_scRNAseq_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.plotting.animate_scRNAseq_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="RNAscrutiny.plotting.plot_pseudotime_tree">
+<code class="descclassname">RNAscrutiny.plotting.</code><code class="descname">plot_pseudotime_tree</code><span class="sig-paren">(</span><em>tr</em>, <em>data</em>, <em>cells=None</em>, <em>t=None</em>, <em>color_by='time'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/plotting.html#plot_pseudotime_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.plotting.plot_pseudotime_tree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="RNAscrutiny.plotting.plot_scRNAseq_data">
+<code class="descclassname">RNAscrutiny.plotting.</code><code class="descname">plot_scRNAseq_data</code><span class="sig-paren">(</span><em>data</em>, <em>cells=None</em>, <em>t=None</em>, <em>color_by='time'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/plotting.html#plot_scRNAseq_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.plotting.plot_scRNAseq_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-RNAscrutiny.pseudotime">
+<span id="rnascrutiny-pseudotime-module"></span><h2>RNAscrutiny.pseudotime module<a class="headerlink" href="#module-RNAscrutiny.pseudotime" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="RNAscrutiny.pseudotime.pseudotime">
+<code class="descclassname">RNAscrutiny.pseudotime.</code><code class="descname">pseudotime</code><span class="sig-paren">(</span><em>data</em>, <em>cells</em>, <em>var_explained=0.99</em>, <em>m=None</em>, <em>k=None</em>, <em>resid_factor=1.0</em>, <em>max_iter=1</em>, <em>eps=1e-05</em>, <em>sig=0.1</em>, <em>gam=1.0</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/pseudotime.html#pseudotime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.pseudotime.pseudotime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="RNAscrutiny.pseudotime.rge">
+<code class="descclassname">RNAscrutiny.pseudotime.</code><code class="descname">rge</code><span class="sig-paren">(</span><em>x</em>, <em>c</em>, <em>max_iter=100</em>, <em>eps=1e-05</em>, <em>sig=0.1</em>, <em>gam=1.0</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/pseudotime.html#rge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.pseudotime.rge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-RNAscrutiny.simulate">
+<span id="rnascrutiny-simulate-module"></span><h2>RNAscrutiny.simulate module<a class="headerlink" href="#module-RNAscrutiny.simulate" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RNAscrutiny.simulate.development_tree">
+<em class="property">class </em><code class="descclassname">RNAscrutiny.simulate.</code><code class="descname">development_tree</code><span class="sig-paren">(</span><em>w</em>, <em>cell_types</em>, <em>parent_types</em>, <em>frac_tf_per_branch=0.01</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/simulate.html#development_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.simulate.development_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="RNAscrutiny.simulate.development_tree.get_equilibrium_ts">
+<code class="descname">get_equilibrium_ts</code><span class="sig-paren">(</span><em>t0=0.0</em>, <em>dt=0.1</em>, <em>tn=1000.0</em>, <em>eps=1e-05</em>, <em>n_ic=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/simulate.html#development_tree.get_equilibrium_ts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.simulate.development_tree.get_equilibrium_ts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RNAscrutiny.simulate.development_tree.get_paths">
+<code class="descname">get_paths</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/simulate.html#development_tree.get_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.simulate.development_tree.get_paths" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RNAscrutiny.simulate.development_tree.get_s0">
+<code class="descname">get_s0</code><span class="sig-paren">(</span><em>t0=0.0</em>, <em>dt=0.1</em>, <em>tn=1000.0</em>, <em>eps=1e-05</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/simulate.html#development_tree.get_s0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.simulate.development_tree.get_s0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RNAscrutiny.simulate.development_tree.get_stem_cell_type">
+<code class="descname">get_stem_cell_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/simulate.html#development_tree.get_stem_cell_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.simulate.development_tree.get_stem_cell_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RNAscrutiny.simulate.development_tree.get_tfs">
+<code class="descname">get_tfs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/simulate.html#development_tree.get_tfs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.simulate.development_tree.get_tfs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RNAscrutiny.simulate.simulate_cell">
+<code class="descclassname">RNAscrutiny.simulate.</code><code class="descname">simulate_cell</code><span class="sig-paren">(</span><em>(icell</em>, <em>cell</em>, <em>dev_tree</em>, <em>nt</em>, <em>dt</em>, <em>dw_scale</em>, <em>tf_weight</em>, <em>verbose)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/simulate.html#simulate_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.simulate.simulate_cell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="RNAscrutiny.simulate.simulate_scRNAseq_data">
+<code class="descclassname">RNAscrutiny.simulate.</code><code class="descname">simulate_scRNAseq_data</code><span class="sig-paren">(</span><em>dev_tree</em>, <em>n_cells</em>, <em>time_dist='uniform'</em>, <em>dt=0.1</em>, <em>dw_scale=0.1</em>, <em>tf_weight=0.5</em>, <em>frac_dropout=0.0</em>, <em>r_dispersion=False</em>, <em>r_loc=1.0</em>, <em>r_scale=0.1</em>, <em>n_processes=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/simulate.html#simulate_scRNAseq_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.simulate.simulate_scRNAseq_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-RNAscrutiny.tree">
+<span id="rnascrutiny-tree-module"></span><h2>RNAscrutiny.tree module<a class="headerlink" href="#module-RNAscrutiny.tree" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RNAscrutiny.tree.tree">
+<em class="property">class </em><code class="descclassname">RNAscrutiny.tree.</code><code class="descname">tree</code><span class="sig-paren">(</span><em>v</em>, <em>w</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/tree.html#tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.tree.tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="RNAscrutiny.tree.tree.get_branch">
+<code class="descname">get_branch</code><span class="sig-paren">(</span><em>start</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/tree.html#tree.get_branch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.tree.tree.get_branch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RNAscrutiny.tree.tree.get_pseudotime">
+<code class="descname">get_pseudotime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/tree.html#tree.get_pseudotime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.tree.tree.get_pseudotime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RNAscrutiny.tree.tree.set_root">
+<code class="descname">set_root</code><span class="sig-paren">(</span><em>stem_cell_data=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/RNAscrutiny/tree.html#tree.set_root"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RNAscrutiny.tree.tree.set_root" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-RNAscrutiny">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-RNAscrutiny" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container container-navbar-bottom">
+      <div class="spc-navbar">
+        
+      </div>
+    </div>
+    <div class="container">
+    <div class="footer">
+    <div class="row-fluid">
+    <ul class="inline pull-left">
+      <li>
+        &copy; Copyright 2018, Joseph P McKenna.
+      </li>
+      <li>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.6.
+      </li>
+    </ul>
+    </div>
+    </div>
+    </div>
+  </body>
+</html>

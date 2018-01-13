@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>RNAscrutiny.simulate &mdash; scRutiNy 1.2 documentation</title>
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/css/spc-bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../_static/css/spc-extend.css">
+    <link rel="stylesheet" href="../../_static/scipy.css" type="text/css" >
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" >
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/js/copybutton.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" >
+    <link rel="search" title="Search" href="../../search.html" >
+    <link rel="top" title="scRutiNy 1.2 documentation" href="../../index.html" >
+    <link rel="up" title="Module code" href="../index.html" > 
+  </head>
+  <body>
+
+  <div class="container">
+    <div class="header">
+    </div>
+  </div>
+
+
+    <div class="container">
+      <div class="main">
+        
+	<div class="row-fluid">
+	  <div class="span12">
+	    <div class="spc-navbar">
+              
+    <ul class="nav nav-pills pull-left">
+        <li class="active"><a href="https://www.niddk.nih.gov/research-funding/at-niddk/labs-branches/LBM">LBM</a></li>
+        <li class="active"><a href="https://pypi.python.org/pypi/RNAscrutiny">scRutiNy</a></li>
+	
+        <li class="active"><a href="../../index.html">scRutiNy 1.2 documentation</a></li>
+	
+          <li class="active"><a href="../index.html" accesskey="U">Module code</a></li> 
+    </ul>
+              
+              
+    <ul class="nav nav-pills pull-right">
+      <li class="active">
+        <a href="../../genindex.html" title="General Index"
+           accesskey="I">index</a>
+      </li>
+      <li class="active">
+        <a href="../../py-modindex.html" title="Python Module Index"
+           >modules</a>
+      </li>
+    </ul>
+              
+	    </div>
+	  </div>
+	</div>
+        
+
+	<div class="row-fluid">
+      <div class="spc-rightsidebar span3">
+        <div class="sphinxsidebarwrapper">
+            <!-- -->
+            <!--
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script> -->
+            <!-- -->
+        </div>
+      </div>
+          <div class="span9">
+            
+        <div class="bodywrapper">
+          <div class="body" id="spc-section-body">
+            
+  <h1>Source code for RNAscrutiny.simulate</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+
+<div class="viewcode-block" id="development_tree"><a class="viewcode-back" href="../../_source/RNAscrutiny.html#RNAscrutiny.simulate.development_tree">[docs]</a><span class="k">class</span> <span class="nc">development_tree</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">cell_types</span><span class="p">,</span> <span class="n">parent_types</span><span class="p">,</span> <span class="n">frac_tf_per_branch</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell_types</span> <span class="o">=</span> <span class="n">cell_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_types</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">cell_types</span><span class="p">,</span> <span class="n">parent_types</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frac_tf_per_branch</span> <span class="o">=</span> <span class="n">frac_tf_per_branch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_tf_per_branch</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">frac_tf_per_branch</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_stem_cell_type</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_tfs</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_paths</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_equilibrium_ts</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_s0</span><span class="p">()</span>
+
+<div class="viewcode-block" id="development_tree.get_stem_cell_type"><a class="viewcode-back" href="../../_source/RNAscrutiny.html#RNAscrutiny.simulate.development_tree.get_stem_cell_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_stem_cell_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stem_cell_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">cell_type</span><span class="p">,</span> <span class="n">parent_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_types</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">parent_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stem_cell_type</span> <span class="o">=</span> <span class="n">cell_type</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stem_cell_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="s1">&#39;development_tree: At least one parent cell type must be None.&#39;</span>
+            <span class="n">exit</span></div>
+
+<div class="viewcode-block" id="development_tree.get_tfs"><a class="viewcode-back" href="../../_source/RNAscrutiny.html#RNAscrutiny.simulate.development_tree.get_tfs">[docs]</a>    <span class="k">def</span> <span class="nf">get_tfs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tfs</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">def</span> <span class="nf">__get_tf</span><span class="p">(</span><span class="n">cell_type</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">cell_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">stem_cell_type</span><span class="p">:</span>
+                <span class="n">tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_tf_per_branch</span><span class="p">)</span>
+                <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">[:,</span> <span class="n">tf</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tfs</span><span class="p">[</span><span class="n">cell_type</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">sign</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">old_tf</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parent_types</span><span class="p">[</span><span class="n">cell_type</span><span class="p">]]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                <span class="n">unused_regulators</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">old_tf</span><span class="p">))</span>
+                <span class="n">new_tf</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+                        <span class="n">unused_regulators</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">n_tf_per_branch</span><span class="p">,</span> <span class="p">))</span>
+                <span class="c1"># old_tf = list(</span>
+                <span class="c1">#     np.random.choice(</span>
+                <span class="c1">#         old_tf,</span>
+                <span class="c1">#         int(len(old_tf) * (1 - self.frac_tf_per_branch)),</span>
+                <span class="c1">#         replace=False))</span>
+                <span class="n">tf</span> <span class="o">=</span> <span class="n">old_tf</span> <span class="o">+</span> <span class="n">new_tf</span>
+                <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">[:,</span> <span class="n">tf</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tfs</span><span class="p">[</span><span class="n">cell_type</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">sign</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">child_type</span><span class="p">,</span> <span class="n">parent_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_types</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">parent_type</span> <span class="o">==</span> <span class="n">cell_type</span><span class="p">:</span>
+                    <span class="n">__get_tf</span><span class="p">(</span><span class="n">child_type</span><span class="p">)</span>
+
+        <span class="n">__get_tf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stem_cell_type</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="development_tree.get_paths"><a class="viewcode-back" href="../../_source/RNAscrutiny.html#RNAscrutiny.simulate.development_tree.get_paths">[docs]</a>    <span class="k">def</span> <span class="nf">get_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__get_path</span><span class="p">(</span><span class="n">cell_type</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cell_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">stem_cell_type</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">path</span>
+            <span class="k">for</span> <span class="n">child_type</span><span class="p">,</span> <span class="n">parent_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_types</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">child_type</span> <span class="o">==</span> <span class="n">cell_type</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">__get_path</span><span class="p">(</span><span class="n">parent_type</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">paths</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">cell_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_types</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">cell_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">__get_path</span><span class="p">(</span><span class="n">cell_type</span><span class="p">,</span> <span class="p">[])</span></div>
+
+<div class="viewcode-block" id="development_tree.get_equilibrium_ts"><a class="viewcode-back" href="../../_source/RNAscrutiny.html#RNAscrutiny.simulate.development_tree.get_equilibrium_ts">[docs]</a>    <span class="k">def</span> <span class="nf">get_equilibrium_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">tn</span><span class="o">=</span><span class="mf">1e3</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">n_ic</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">tn</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+        <span class="n">nt</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">equilibrium_ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell_types</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">__get_equilibrium_t</span><span class="p">(</span><span class="n">tf</span><span class="o">=</span><span class="p">{}):</span>
+            <span class="n">t_inf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_ic</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">nt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">iic</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_ic</span><span class="p">):</span>
+                <span class="n">s</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">gene</span><span class="p">,</span> <span class="n">sign</span> <span class="ow">in</span> <span class="n">tf</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                    <span class="n">s</span><span class="p">[</span><span class="n">gene</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sign</span>
+                <span class="k">for</span> <span class="n">it</span><span class="p">,</span> <span class="n">ti</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                    <span class="n">s</span><span class="p">[:,</span> <span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:,</span> <span class="n">it</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span>
+                        <span class="o">-</span><span class="n">s</span><span class="p">[:,</span> <span class="n">it</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">*</span> <span class="n">s</span><span class="p">[:,</span> <span class="n">it</span><span class="p">]))</span> <span class="o">*</span> <span class="n">dt</span>
+                    <span class="k">for</span> <span class="n">gene</span><span class="p">,</span> <span class="n">sign</span> <span class="ow">in</span> <span class="n">tf</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                        <span class="n">s</span><span class="p">[</span><span class="n">gene</span><span class="p">,</span> <span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sign</span>
+                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">s</span><span class="p">[:,</span> <span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">s</span><span class="p">[:,</span> <span class="n">it</span><span class="p">]</span>
+                                      <span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">s</span><span class="p">[:,</span> <span class="n">it</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+                        <span class="n">t_inf</span><span class="p">[</span><span class="n">iic</span><span class="p">]</span> <span class="o">=</span> <span class="n">ti</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="n">ti</span> <span class="o">==</span> <span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="k">break</span>
+            <span class="n">t_inf</span> <span class="o">=</span> <span class="n">t_inf</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">if</span> <span class="n">ti</span> <span class="o">!=</span> <span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="n">tn</span>
+            <span class="k">return</span> <span class="n">t_inf</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">equilibrium_ts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">cell_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_types</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">equilibrium_ts</span><span class="p">[</span><span class="n">cell_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">__get_equilibrium_t</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tfs</span><span class="p">[</span><span class="n">cell_type</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="development_tree.get_s0"><a class="viewcode-back" href="../../_source/RNAscrutiny.html#RNAscrutiny.simulate.development_tree.get_s0">[docs]</a>    <span class="k">def</span> <span class="nf">get_s0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">tn</span><span class="o">=</span><span class="mf">1e3</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">tn</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+        <span class="n">nt</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">gene</span><span class="p">,</span> <span class="n">sign</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tfs</span><span class="p">[</span><span class="s1">&#39;stem&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">s</span><span class="p">[</span><span class="n">gene</span><span class="p">]</span> <span class="o">=</span> <span class="n">sign</span>
+        <span class="k">for</span> <span class="n">it</span><span class="p">,</span> <span class="n">ti</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="n">next_s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">s</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">*</span> <span class="n">s</span><span class="p">))</span> <span class="o">*</span> <span class="n">dt</span>
+            <span class="k">for</span> <span class="n">gene</span><span class="p">,</span> <span class="n">sign</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tfs</span><span class="p">[</span><span class="s1">&#39;stem&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="n">next_s</span><span class="p">[</span><span class="n">gene</span><span class="p">]</span> <span class="o">=</span> <span class="n">sign</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">next_s</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">next_s</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s0</span> <span class="o">=</span> <span class="n">s</span></div></div>
+
+
+<div class="viewcode-block" id="simulate_cell"><a class="viewcode-back" href="../../_source/RNAscrutiny.html#RNAscrutiny.simulate.simulate_cell">[docs]</a><span class="k">def</span> <span class="nf">simulate_cell</span><span class="p">((</span><span class="n">icell</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">dev_tree</span><span class="p">,</span> <span class="n">nt</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">dw_scale</span><span class="p">,</span> <span class="n">tf_weight</span><span class="p">,</span>
+                   <span class="n">verbose</span><span class="p">)):</span>
+
+    <span class="n">w</span> <span class="o">=</span> <span class="n">dev_tree</span><span class="o">.</span><span class="n">w</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">dev_tree</span><span class="o">.</span><span class="n">s0</span><span class="p">]</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">dev_tree</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">ibranch</span><span class="p">,</span> <span class="n">branch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+
+        <span class="n">tn</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">*</span> <span class="p">(</span><span class="n">nt</span><span class="p">[</span><span class="n">ibranch</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">tn</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">it</span><span class="p">,</span> <span class="n">ti</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="n">dw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
+                     <span class="p">(</span><span class="o">-</span><span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dw_scale</span> <span class="o">*</span> <span class="n">dw</span><span class="p">))</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">gene</span><span class="p">,</span> <span class="n">sign</span> <span class="ow">in</span> <span class="n">dev_tree</span><span class="o">.</span><span class="n">tfs</span><span class="p">[</span><span class="n">branch</span><span class="p">]</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">gene</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="mf">1.0</span> <span class="o">-</span> <span class="n">tf_weight</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">gene</span><span class="p">]</span> <span class="o">+</span> <span class="n">tf_weight</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">sign</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="s1">&#39;cell:&#39;</span><span class="p">,</span> <span class="n">icell</span><span class="p">,</span> <span class="s1">&#39;type:&#39;</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="s1">&#39;age:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="simulate_scRNAseq_data"><a class="viewcode-back" href="../../_source/RNAscrutiny.html#RNAscrutiny.simulate.simulate_scRNAseq_data">[docs]</a><span class="k">def</span> <span class="nf">simulate_scRNAseq_data</span><span class="p">(</span><span class="n">dev_tree</span><span class="p">,</span>
+                           <span class="n">n_cells</span><span class="p">,</span>
+                           <span class="n">time_dist</span><span class="o">=</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span>
+                           <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                           <span class="n">dw_scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                           <span class="n">tf_weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                           <span class="n">frac_dropout</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                           <span class="n">r_dispersion</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="n">r_loc</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                           <span class="n">r_scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                           <span class="n">n_processes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+    <span class="n">cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">dev_tree</span><span class="o">.</span><span class="n">cell_types</span><span class="p">,</span> <span class="n">n_cells</span><span class="p">)</span>
+
+    <span class="n">kwds</span> <span class="o">=</span> <span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">dw_scale</span><span class="p">,</span> <span class="n">tf_weight</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">time_dist</span> <span class="o">==</span> <span class="s1">&#39;uniform&#39;</span><span class="p">:</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span>
+    <span class="k">elif</span> <span class="n">time_dist</span> <span class="o">==</span> <span class="s1">&#39;poisson&#39;</span><span class="p">:</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span>
+    <span class="n">nt</span> <span class="o">=</span> <span class="p">[[</span>
+        <span class="n">dist</span><span class="p">(</span><span class="n">dev_tree</span><span class="o">.</span><span class="n">equilibrium_ts</span><span class="p">[</span><span class="n">branch</span><span class="p">]</span> <span class="o">//</span> <span class="n">dt</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">branch</span> <span class="ow">in</span> <span class="n">dev_tree</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+    <span class="p">]</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">]</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">((</span><span class="n">icell</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">dev_tree</span><span class="p">),</span> <span class="n">nt</span><span class="p">[</span><span class="n">icell</span><span class="p">])</span> <span class="o">+</span> <span class="n">kwds</span>
+            <span class="k">for</span> <span class="n">icell</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cells</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">n_processes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n_processes</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+    <span class="n">pool</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="n">n_processes</span><span class="p">,</span> <span class="n">maxtasksperchild</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map_async</span><span class="p">(</span><span class="n">simulate_cell</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+
+    <span class="n">history</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">pool</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+    <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+    <span class="n">ages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span> <span class="k">for</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">history</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">ages</span> <span class="o">-=</span> <span class="n">ages</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">ages</span> <span class="o">/=</span> <span class="n">ages</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">expr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">history</span><span class="p">])</span>
+
+    <span class="n">n_genes</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># dropout and radius dispersion</span>
+    <span class="n">n_dropout</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">frac_dropout</span> <span class="o">*</span> <span class="n">n_genes</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">irow</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="n">dropout</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">n_genes</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_dropout</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="n">dropout</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">if</span> <span class="n">r_dispersion</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">r_loc</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">r_scale</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+            <span class="n">row</span> <span class="o">*=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">r</span> <span class="o">*</span> <span class="n">r</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">irow</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span>
+
+    <span class="c1"># cols: cells, rows: genes</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">ages</span></div>
+</pre></div>
+
+          </div>
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container container-navbar-bottom">
+      <div class="spc-navbar">
+        
+      </div>
+    </div>
+    <div class="container">
+    <div class="footer">
+    <div class="row-fluid">
+    <ul class="inline pull-left">
+      <li>
+        &copy; Copyright 2018, Joseph P McKenna.
+      </li>
+      <li>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.6.
+      </li>
+    </ul>
+    </div>
+    </div>
+    </div>
+  </body>
+</html>
